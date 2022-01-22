@@ -1,5 +1,5 @@
 <template>
-    <v-container class="lighten-5 mb-6 center">
+    <v-container class="lighten-5 mb-6">
         <v-row class="justify-center" no-gutters style="height: 100px; width: 1000px;">
             <img
                 class="rounded-xl mr-2"
@@ -51,18 +51,23 @@
                 </template>
             </v-text-field>
         </v-row>
-        <!-- :class="reply && commentId + 1 == n + 1 ? `mb-10` : ''" -->
         <div v-for="n in 5" :key="n" :class="reply && commentId + 1 == n + 1 ? `mb-15` : ''">
             <v-row class="mt-4" no-gutters>
-                <div class="d-flex" style="width: 1000px;">
-                    <img
-                        class="rounded-xl mr-2"
-                        height="50"
-                        width="50"
-                        src="https://images.unsplash.com/photo-1642698335289-e9073f8afb03?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60"
-                    />
-                    <v-card outlined gray min-width="950px">
-                        <div>
+                <v-col cols="6">
+                    <div class="d-flex" style="width: 1000px;">
+                        <img
+                            class="rounded-xl mr-2"
+                            height="50"
+                            width="50"
+                            src="https://images.unsplash.com/photo-1642698335289-e9073f8afb03?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60"
+                        />
+                        <v-card
+                            outlined
+                            gray
+                            class="mx-auto"
+                            max-width="900"
+                            color="grey lighten-3"
+                        >
                             <h1 class="text-overline pl-5">Elon Musk</h1>
 
                             <p class="pl-5">Tagline -working from home</p>
@@ -70,9 +75,22 @@
                             <p
                                 class="pl-5 pt-4"
                             >Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste molestias est libero ut dolorum fugit sint sunt, facilis nesciunt praesentium laudantium,</p>
-                        </div>
-                    </v-card>
-                </div>
+                        </v-card>
+                        <v-menu left bottom>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn icon v-bind="attrs" v-on="on">
+                                    <v-icon>mdi-dots-vertical</v-icon>
+                                </v-btn>
+                            </template>
+
+                            <v-list>
+                                <v-list-item v-for="n in 5" :key="n" @click="() => { }">
+                                    <v-list-item-title>Option {{ n }}</v-list-item-title>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+                    </div>
+                </v-col>
             </v-row>
             <v-row no-gutters style="height: 40px;">
                 <div class="d-flex pb-4">
@@ -143,33 +161,11 @@ export default {
 
 <style>
 @import "../../assets/css/emoji.css";
+
 .center {
     margin-left: 500px;
 }
 .cursor-pointer {
     cursor: pointer;
 }
-
-/* .v-field__control {
-    fon
-/* .v-field__control {
-    font-style: normal;
-    border-radius: 10px;
-} */
-
-/* .v-field__control {
-    font-style: normal;
-    border-radius: 10px;
-} */
-
-/* .vue__box {
-    background-color: darkgrey;
-    font-style: italic;
-} */
-
-/* .image__rounded {
-    border-radius: 10px;
-    margin-top: 5px;
-    margin-right: 10px;
-} */
 </style>
