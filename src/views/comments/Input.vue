@@ -7,9 +7,46 @@
                 width="50"
                 src="https://images.unsplash.com/photo-1642698335289-e9073f8afb03?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60"
             />
-            <v-text-field label="write your comments" filled rounded dense>
+            <v-text-field label="write your comments" v-model="input" filled rounded dense>
                 <template slot="append">
-                    <v-icon>mdi-emoticon-happy</v-icon>
+                    <div>
+                        <EmojiPicker @emoji="insert" :search="search">
+                            <div
+                                slot="emoji-invoker"
+                                slot-scope="{ events: { click: clickEvent } }"
+                                @click.stop="clickEvent"
+                            >
+                                <v-icon>mdi-emoticon-happy</v-icon>
+                            </div>
+                            <div slot="emoji-picker" slot-scope="{ emojis, insert, display }">
+                                <div
+                                    class="emoji-picker"
+                                    :style="{ top: display.y + 'px', left: display.x + 'px' }"
+                                >
+                                    <div class="emoji-picker__search">
+                                        <input type="text" v-model="search" v-focus />
+                                    </div>
+                                    <div>
+                                        <div
+                                            v-for="(emojiGroup, category) in emojis"
+                                            :key="category"
+                                        >
+                                            <h5>{{ category }}</h5>
+                                            <div class="emojis">
+                                                <span
+                                                    v-for="(emoji, emojiName) in emojiGroup"
+                                                    :key="emojiName"
+                                                    @click="insert(emoji)"
+                                                    :title="emojiName"
+                                                >{{ emoji }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </EmojiPicker>
+                    </div>
+
                     <v-icon class="ml-4">mdi-folder</v-icon>
                 </template>
             </v-text-field>
@@ -31,7 +68,7 @@
                             <p class="pl-5">Tagline -working from home</p>
 
                             <p
-                                class="pl-5 pt-10"
+                                class="pl-5 pt-4"
                             >Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste molestias est libero ut dolorum fugit sint sunt, facilis nesciunt praesentium laudantium,</p>
                         </div>
                     </v-card>
@@ -70,31 +107,49 @@
 </template>
 
 <script>
+import EmojiPicker from 'vue-emoji-picker';
 export default {
     name: 'Input',
+    components: {
+        EmojiPicker,
+    },
     data() {
         return {
             reply: false,
             commentId: null,
+            input: '',
+            search: '',
         }
     },
     methods: {
         toglleReply(n) {
             this.reply = !this.reply;
             this.commentId = n;
-        }
-    }
+        },
+        insert(emoji) {
+            this.input += emoji
+        },
+    },
+    directives: {
+        focus: {
+            inserted(el) {
+                el.focus()
+            },
+        },
+    },
 }
 </script>
 
 
 <style>
+@import "../../assets/css/emoji.css";
 .center {
     margin-left: 500px;
 }
 .cursor-pointer {
     cursor: pointer;
 }
+
 /* .v-field__control {
     fon
 /* .v-field__control {
