@@ -158,7 +158,7 @@
                                                         <span
                                                             v-for="(emoji, emojiName) in emojiGroup"
                                                             :key="emojiName"
-                                                            @click="insert(emoji)"
+                                                            @click="insertReply(emoji)"
                                                             :title="emojiName"
                                                         >{{ emoji }}</span>
                                                     </div>
@@ -226,6 +226,9 @@ export default {
         insert(emoji) {
             this.comment += emoji
         },
+        insertReply(emoji) {
+            this.reply += emoji;
+        }
 
     },
     directives: {
