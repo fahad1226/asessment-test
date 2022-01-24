@@ -10,11 +10,11 @@ const routes = [
         name: "home",
         component: Home,
     },
-    {
-        path: "/comments",
-        name: "comments",
-        component: Comments,
-    },
+    // {
+    //     path: "/comments",
+    //     name: "comments",
+    //     component: Comments,
+    // },
 ];
 
 const router = new VueRouter({

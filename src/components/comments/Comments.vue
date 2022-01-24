@@ -1,6 +1,6 @@
 <template>
     <div class="pt-5">
-        <Input />
+        <!-- <Input /> -->
     </div>
 </template>
 
