@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex" >
+    <div class="d-flex">
         <img
             class="rounded-xl mr-2"
             height="50"
@@ -11,6 +11,7 @@
             gray
             class="d-flex justify-space-between align-start mx-auto"
             max-width="900"
+            :min-width="width || 900 "
             color="grey lighten-3"
         >
             <div>
@@ -18,10 +19,9 @@
 
                 <p class="pl-5 text-caption mb-3">Tagline -- working from home</p>
 
-                <p
-                    class="pl-5 pt-4"
-                >Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste molestias est libero ut dolorum fugit sint sunt, facilis nesciunt praesentium laudantium,</p>
+                <p class="pl-5 pt-4">{{ comment.content }}</p>
             </div>
+            <v-spacer></v-spacer>
             <time class="font-13 pt-3 mr-4">17h</time>
             <div class="mr-2 pt-1">
                 <v-menu left bottomc class="mr-15">
@@ -40,6 +40,7 @@
 
 <script>
 export default {
-    name: 'Content'
+    name: 'Content',
+    props: ['comment', 'width']
 }
 </script>
