@@ -1,14 +1,14 @@
 <template>
     <div>
-        <Layout />
+        <Chatbox />
     </div>
 </template>
 
 
 <script>
-import Layout from "../../views/messages/Layout.vue";
+import Chatbox from "@/views/messages/Chatbox.vue";
 export default {
     name: "Message",
-    components: {  Layout }
+    components: { Chatbox }
 }
 </script>

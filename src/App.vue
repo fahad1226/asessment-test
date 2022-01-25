@@ -1,5 +1,14 @@
 <template>
   <v-app>
+    <v-app-bar app flat>
+      <v-avatar :color="$vuetify.breakpoint.smAndDown ? 'grey darken-1' : 'transparent'" size="32"></v-avatar>
+
+      <v-tabs centered class="ml-n9" color="grey darken-1">
+        <v-tab v-for="link in links" :key="link" @click="$router.push(link)">{{ link }}</v-tab>
+      </v-tabs>
+
+      <v-avatar class="hidden-sm-and-down" color="grey darken-1 shrink" size="32"></v-avatar>
+    </v-app-bar>
     <v-main>
       <router-view />
     </v-main>
@@ -11,8 +20,13 @@
 export default {
   name: 'App',
 
-  data: () => ({
-    //
-  }),
+  data() {
+    return {
+      links: [
+        "comments",
+        "messages"
+      ],
+    }
+  }
 };
 </script>

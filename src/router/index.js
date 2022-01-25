@@ -1,14 +1,14 @@
 import Messages from "@/components/messages/Message.vue";
-import Home from "@/views/Home.vue";
+import Comments from "@/views/Home.vue";
 import Vue from "vue";
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 const routes = [
     {
-        path: "/",
-        name: "home",
-        component: Home,
+        path: "/comments",
+        name: "comments",
+        component: Comments,
     },
     {
         path: "/messages",
