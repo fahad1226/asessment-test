@@ -1,7 +1,7 @@
-import Comments from "@/components/comments/Comments.vue";
+import Messages from "@/components/messages/Message.vue";
+import Home from "@/views/Home.vue";
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from '@/views/Home.vue';
 Vue.use(VueRouter);
 
 const routes = [
@@ -10,11 +10,11 @@ const routes = [
         name: "home",
         component: Home,
     },
-    // {
-    //     path: "/comments",
-    //     name: "comments",
-    //     component: Comments,
-    // },
+    {
+        path: "/messages",
+        name: "messages",
+        component: Messages,
+    },
 ];
 
 const router = new VueRouter({
