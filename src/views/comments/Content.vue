@@ -11,13 +11,21 @@
             gray
             class="d-flex justify-space-between align-start mx-auto"
             max-width="900"
-            :min-width="width || 900 "
+            :min-width="width || 900"
             color="grey lighten-3"
         >
             <div>
                 <h4 class="text-overline pl-5">Elon Musk</h4>
 
                 <p class="pl-5 text-caption mb-3">Tagline -- working from home</p>
+
+                <img
+                    v-if="comment.image"
+                    class="pl-6"
+                    width="400"
+                    height="150"
+                    :src="comment.image"
+                />
 
                 <p class="pl-5 pt-4">{{ comment.content }}</p>
             </div>
@@ -31,7 +39,7 @@
                         </v-btn>
                     </template>
 
-                    <v-btn>Delete</v-btn>
+                    <v-btn @click="deleteComment(comment)">Delete</v-btn>
                 </v-menu>
             </div>
         </v-card>
@@ -41,6 +49,12 @@
 <script>
 export default {
     name: 'Content',
-    props: ['comment', 'width']
+    props: ['comment', 'width'],
+    methods: {
+        deleteComment(comment) {
+            store.dispatch('deleteComment', comment);
+            //this.$emit('deleteComment', n);
+        }
+    }
 }
 </script>

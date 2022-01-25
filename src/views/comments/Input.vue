@@ -7,15 +7,25 @@
                 width="50"
                 src="https://images.unsplash.com/photo-1642698335289-e9073f8afb03?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60"
             />
+
             <v-text-field
                 @keyup.enter="addComment"
                 class="ml-5"
                 label="write your comments"
-                v-model="comment"
+                v-model="comment.content"
                 filled
                 rounded
                 dense
             >
+                <!-- <template slot="append" class="image_left">
+                    <img
+                        class="float-start"
+                        height="80"
+                        width="80"
+                        src="https://picsum.photos/id/11/500/300"
+                        alt
+                    />
+                </template>-->
                 <template slot="append">
                     <div>
                         <EmojiPicker @emoji="insert" :search="search">
@@ -54,8 +64,8 @@
                             </div>
                         </EmojiPicker>
                     </div>
-
-                    <v-icon class="ml-4">mdi-folder</v-icon>
+                    <input type="file" ref="file" @change="imageChanged" style="display: none" />
+                    <v-icon @click="$refs.file.click()" class="ml-4">mdi-folder</v-icon>
                 </template>
             </v-text-field>
         </v-row>
@@ -67,6 +77,7 @@
         >
             <v-row class="mt-4" no-gutters>
                 <v-col cols="6">
+                    <!-- @deleteComment="deleteComment($event)" -->
                     <Content :comment="comment" style="width: 1000px;" />
                 </v-col>
             </v-row>
@@ -192,9 +203,13 @@ export default {
             counter: 0,
             showReply: false,
             commentId: null,
-            comment: '',
+            comment: {
+                content: '',
+                image: ''
+            },
             reply: '',
             search: '',
+
         }
     },
     computed: {
@@ -212,8 +227,13 @@ export default {
         },
 
         addComment() {
+
             store.dispatch('addComment', this.comment);
-            this.comment = '';
+            this.comment.content = '';
+            if (this.comment.image) {
+                this.comment.image = '';
+                console.log('image ache ekhane');
+            }
 
         },
         addReply(id) {
@@ -224,10 +244,22 @@ export default {
             this.reply = '';
         },
         insert(emoji) {
-            this.comment += emoji
+            this.comment.content += emoji
         },
         insertReply(emoji) {
             this.reply += emoji;
+        },
+        imageChanged(e) {
+            this.clearImageField();
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(e.target.files[0]);
+            fileReader.onload = (e) => {
+                this.comment.image = e.target.result;
+            };
+            this.preview = true;
+        },
+        clearImageField() {
+            this.comment.image = null;
         }
 
     },
@@ -245,6 +277,9 @@ export default {
 <style>
 @import "../../assets/css/emoji.css";
 
+.image_left {
+    padding-right: 100px;
+}
 .center {
     margin-left: 500px;
 }

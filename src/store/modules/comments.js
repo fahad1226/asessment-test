@@ -6,16 +6,27 @@ const commentsModule = {
     }),
     mutations: {
         updateComment(state, payload) {
-            console.log("from state", payload);
-            state.comments.push({ id: state.counter++, content: payload });
+            state.comments.push({
+                id: state.counter++,
+                content: payload.content,
+                image: payload.image,
+            });
         },
 
         updateReply(state, payload) {
-            console.log("from reply state", payload);
             state.replies.push({
                 commentId: payload.commentId,
                 content: payload.content,
             });
+        },
+
+        updateDeleteComment(state, payload) {
+            console.log(payload);
+            const index = state.comments.indexOf(payload);
+            if (index > -1) {
+                state.comments.splice(index, 1);
+            }
+            console.log(state.comments);
         },
     },
     actions: {
@@ -25,6 +36,10 @@ const commentsModule = {
 
         addReply({ commit }, payload) {
             commit("updateReply", payload);
+        },
+
+        deleteComment({ commit }, payload) {
+            commit("updateDeleteComment", payload);
         },
     },
     getters: {
