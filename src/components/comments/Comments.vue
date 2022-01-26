@@ -1,7 +1,15 @@
 <template>
-    <div class="pt-5">
-        <!-- <Input /> -->
-    </div>
+    <v-main class="lighten-3">
+        <v-container>
+            <v-row justify="center">
+                <v-col cols="10" lg="8">
+                    <v-sheet min-height="70vh" rounded="lg">
+                        <Input />
+                    </v-sheet>
+                </v-col>
+            </v-row>
+        </v-container>
+    </v-main>
 </template>
 
 

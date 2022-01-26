@@ -21,12 +21,24 @@ const commentsModule = {
         },
 
         updateDeleteComment(state, payload) {
-            console.log(payload);
-            const index = state.comments.indexOf(payload);
-            if (index > -1) {
-                state.comments.splice(index, 1);
+            if (payload.hasOwnProperty("image") === false) {
+                const index = state.replies.indexOf(payload);
+                if (index > -1) {
+                    state.replies.splice(index, 1);
+                }
+                console.log(state.replies);
+            } else {
+                const index = state.comments.indexOf(payload);
+                if (index > -1) {
+                    state.comments.splice(index, 1);
+                }
+                console.log(state.comments);
             }
-            console.log(state.comments);
+        },
+        updateCommentChanges(state, payload) {
+            const objIndex = state.comments.findIndex((obj) => obj == payload);
+            console.log("edit comment object", objIndex);
+            state.comments[objIndex].content = payload.content;
         },
     },
     actions: {
@@ -40,6 +52,9 @@ const commentsModule = {
 
         deleteComment({ commit }, payload) {
             commit("updateDeleteComment", payload);
+        },
+        saveCommentChanges({ commit }, payload) {
+            commit("updateCommentChanges", payload);
         },
     },
     getters: {

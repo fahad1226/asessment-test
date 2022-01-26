@@ -6,7 +6,7 @@ import commentsModule from "./modules/comments";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-    //plugins: [createPersistedState()],
+    plugins: [createPersistedState()],
     state: {},
     mutations: {},
     actions: {},

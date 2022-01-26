@@ -1,5 +1,5 @@
 import Messages from "@/components/messages/Message.vue";
-import Comments from "@/views/Home.vue";
+import Comments from "@/components/comments/Comments.vue";
 import Vue from "vue";
 import VueRouter from "vue-router";
 Vue.use(VueRouter);

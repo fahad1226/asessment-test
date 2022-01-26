@@ -70,10 +70,18 @@
             </v-text-field>
         </v-row>
 
+        <div v-show="preview" class="ml-5">
+            <img class="ml-15" height="80px" width="150px" :src="comment.image" alt />
+            <div class="d-flex ml-15">
+                <v-btn @click="addComment" x-small color="success">post</v-btn>
+                <v-btn @click="cancelUploading" class="ml-4" x-small color="warning">cancel</v-btn>
+            </div>
+        </div>
+
         <div
             v-for="(comment, index) in comments"
             :key="index"
-            :class="reply && commentId + 1 == n + 1 ? `mb-15` : ''"
+            :class="reply && commentId + 1 == comment + 1 ? `mb-15` : ''"
         >
             <v-row class="mt-4" no-gutters>
                 <v-col cols="6">
@@ -203,6 +211,8 @@ export default {
             counter: 0,
             showReply: false,
             commentId: null,
+            preview: false,
+
             comment: {
                 content: '',
                 image: ''
@@ -227,13 +237,12 @@ export default {
         },
 
         addComment() {
-
             store.dispatch('addComment', this.comment);
             this.comment.content = '';
             if (this.comment.image) {
                 this.comment.image = '';
-                console.log('image ache ekhane');
             }
+            this.preview = false;
 
         },
         addReply(id) {
@@ -258,6 +267,16 @@ export default {
             };
             this.preview = true;
         },
+        cancelUploading() {
+            this.clearImageField();
+            this.preview = false;
+        },
+        // editComment(item) {
+        //     if (item) {
+        //         this.showEditForm = true;
+        //         console.log('edit comment', item);
+        //     }
+        // },
         clearImageField() {
             this.comment.image = null;
         }

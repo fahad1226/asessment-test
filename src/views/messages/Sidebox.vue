@@ -1,5 +1,5 @@
 <template>
-    <v-card max-width="500" height="900" class="mx-auto ml-15">
+    <v-card max-width="500" height="885" class="mx-auto ml-15">
         <div>
             <div class="d-flex">
                 <h3 class="ma-4 pt-2">Messaging</h3>
@@ -32,7 +32,7 @@
 
                     <v-list-item-content>
                         <v-list-item-title v-html="item.title"></v-list-item-title>
-                        <v-list-item-subtitle v-html="item.subtitle"></v-list-item-subtitle>
+                        <v-list-item-subtitle class="d-sm-none d-md-flex"  v-html="item.subtitle"></v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
             </template>
