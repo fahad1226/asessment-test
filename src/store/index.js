@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import commentsModule from "./modules/comments";
+import messagesModule from "./modules/messages";
 
 Vue.use(Vuex);
 
@@ -12,5 +13,6 @@ export default new Vuex.Store({
     actions: {},
     modules: {
         commentsModule,
+        messagesModule,
     },
 });

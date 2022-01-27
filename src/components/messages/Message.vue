@@ -1,25 +1,32 @@
 <template>
     <div :class="`${this.$vuetify.breakpoint.width > 1264 ? 'container lighten-5' : 'lighten-5'}`">
-        <!-- <ChatWindow :current-user-id="currentUserId" :rooms="rooms" :messages="messages" /> -->
         <v-row>
             <v-col cols="0" md="4" class="d-none d-sm-flex" sm="4" lg="4">
                 <Sidebox />
             </v-col>
             <v-col cols="12" md="8" sm="8" lg="8">
-                <!-- <Chatbox /> -->
                 <ChatWindow
+                    :key="componentKey"
                     height="880px"
                     :users="users"
                     :show-send-icon="true"
+                    :rooms-loaded="true"
                     :rooms="rooms"
-                    :messages="messages"
+                    :messages="filterMessage"
                     :single-room="true"
                     :messages-loaded="true"
                     :textarea-action-enabled="true"
-                    @send-message="test"
-                    @send-message-reaction="haha"
+                    :show-reaction-emojis="true"
+                    :message-actions="messageActions"
+                    :show-audio="false"
+                    :show-search="true"
+                    @send-message="sendMessage"
+                    @open-file="openFile"
+                    @send-message-reaction="sendReaction"
+                    @edit-message="editMessage"
+                    @delete-message="deleteMessage"
                 />
-                <button @click="test">sdfsdfsdf</button>
+
                 <!-- <v-textarea
                     v-model="message"
                     @keyup.enter="sendMessage"
@@ -37,7 +44,6 @@
 
 
 <script>
-import eventBus from '@/eventBus.js';
 import Chatbox from "@/views/messages/Chatbox.vue";
 import Sidebox from "@/views/messages/Sidebox.vue";
 import ChatWindow from 'vue-advanced-chat';
@@ -47,211 +53,89 @@ export default {
     components: { ChatWindow, Chatbox, Sidebox },
     data() {
         return {
-            rooms: [
+            currentUserId: 1234,
+            componentKey: 0,
+            messageActions: [
                 {
-                    roomId: 1,
-                    roomName: 'Room 1',
-                    avatar: 'assets/imgs/people.png',
-                    unreadCount: 4,
-                    index: 3,
-                    lastMessage: {
-                        content: 'Last message received',
-                        senderId: 1234,
-                        username: 'John Doe',
-                        timestamp: '10:20',
-                        saved: true,
-                        distributed: false,
-                        seen: false,
-                        new: true
-                    },
-                    users: [
-                        {
-                            _id: 1234,
-                            username: 'John Doe',
-                            avatar: 'assets/imgs/doe.png',
-                            status: {
-                                state: 'online',
-                                lastChanged: 'today, 14:30'
-                            }
-                        },
-                        {
-                            _id: 4321,
-                            username: 'John Snow',
-                            avatar: 'assets/imgs/snow.png',
-                            status: {
-                                state: 'offline',
-                                lastChanged: '14 July, 20:00'
-                            }
-                        }
-                    ],
-                    typingUsers: [4321]
-                }
-            ],
-            message: '',
-
-            messages: [
-                {
-                    _id: 7890,
-                    indexId: 124094,
-                    content: 'Hahah lol 1',
-                    senderId: 1234,
-                    username: 'John Doe',
-                    avatar: 'assets/imgs/doe.png',
-                    date: '13 November',
-                    timestamp: '10:20',
-                    system: false,
-                    saved: true,
-                    distributed: true,
-                    seen: true,
-                    deleted: false,
-                    failure: true,
-                    disableActions: false,
-                    disableReactions: false,
-                    files: [
-                        {
-                            name: 'My File',
-                            size: 67351,
-                            type: 'png',
-                            audio: true,
-                            duration: 14.4,
-                            url: 'https://media.istockphoto.com/photos/headshot-portrait-of-smiling-ethnic-businessman-in-office-picture-id1300512215?b=1&k=20&m=1300512215&s=170667a&w=0&h=LsZL_-vvAHB2A2sNLHu9Vpoib_3aLLkRamveVW3AGeQ=',
-                            preview: 'data:image/png;base64,iVBORw0KGgoAA',
-                            progress: 88
-                        }
-                    ],
-                    reactions: {
-                        '😁': [
-                            1234, // USER_ID
-                            4321
-                        ],
-                        '🥰': [
-                            1234
-                        ],
-                        '🤣': [
-                            1236
-                        ],
-                    },
-                    replyMessage: {
-                        content: 'Reply Message',
-                        senderId: 4321,
-                        files: [
-                            {
-                                name: 'My Replied File',
-                                size: 67351,
-                                type: 'png',
-                                audio: true,
-                                duration: 14.4,
-                                url: 'https://firebasestorage.googleapis.com/...',
-                                preview: 'data:image/png;base64,iVBORw0KGgoAA...'
-                            }
-                        ]
-                    },
-
+                    name: 'replyMessage',
+                    title: 'Reply'
                 },
                 {
-                    _id: 7890,
-                    indexId: 12092,
-                    content: 'Hahah lol 1',
-                    senderId: 1234,
-                    username: 'John Doe',
-                    avatar: 'assets/imgs/doe.png',
-                    date: '13 November',
-                    timestamp: '10:20',
-                    system: false,
-                    saved: true,
-                    distributed: true,
-                    seen: true,
-                    deleted: false,
-                    failure: true,
-                    disableActions: false,
-                    disableReactions: false,
-                    files: [
-                        {
-                            name: 'My File',
-                            size: 67351,
-                            type: 'png',
-                            audio: true,
-                            duration: 14.4,
-                            url: 'https://media.istockphoto.com/photos/headshot-portrait-of-smiling-ethnic-businessman-in-office-picture-id1300512215?b=1&k=20&m=1300512215&s=170667a&w=0&h=LsZL_-vvAHB2A2sNLHu9Vpoib_3aLLkRamveVW3AGeQ=',
-                            preview: 'data:image/png;base64,iVBORw0KGgoAA',
-                            progress: 88
-                        }
-                    ],
-                    reactions: {
-                        '😁': [
-                            1234, // USER_ID
-                            4321
-                        ],
-                        '🥰': [
-                            1234
-                        ],
-                        '🤣': [
-                            1236
-                        ],
-                    },
-                    replyMessage: {
-                        content: 'Reply Message',
-                        senderId: 4321,
-                        files: [
-                            {
-                                name: 'My Replied File',
-                                size: 67351,
-                                type: 'png',
-                                audio: true,
-                                duration: 14.4,
-                                url: 'https://firebasestorage.googleapis.com/...',
-                                preview: 'data:image/png;base64,iVBORw0KGgoAA...'
-                            }
-                        ]
-                    },
+                    name: 'editMessage',
+                    title: 'Edit Message',
+                    onlyMe: false
+                },
+                {
+                    name: 'deleteMessage',
+                    title: 'Delete Message',
+                    onlyMe: false
+                },
+                {
+                    name: 'forwardMessages',
+                    title: 'Forward'
+                },
+                {
+                    name: 'selectMessages',
+                    title: 'Select',
+                    onlyMe: true
+                },
 
-                }
-            ],
-            users: {
-                USER_ID_1: {
-                    _id: 1,
-                    username: 'User 1'
-                },
-                USER_ID_2: {
-                    _id: 2,
-                    username: 'User 2'
-                },
-                USER_ID_3: {
-                    _id: 3,
-                    username: 'User 2'
-                }
-            },
-            currentUserId: 1234
+            ]
         }
     },
+    computed: {
+        //...mapGetters(['messages']),
+        rooms() {
+            return store.getters.rooms;
+        },
+        messages() {
+            return store.getters.messages;
+        },
+        users() {
+            return store.getters.users;
+        },
+        filterMessage() {
+            if (this.$store.state.messagesModule.message) {
+                return this.messages.filter((message) => {
+                    console.log(message);
+                    return message.content.toLowerCase().includes(this.$store.state.messagesModule.message.toLowerCase());
+                });
+            } else {
+                return this.messages;
+            }
+        }
+
+    },
+
     methods: {
-        sendMessage() {
-            this.messages.push({
-                _id: 7342,
-                indexId: 12352,
-                content: 'My namew is fahad',
-                senderId: 1234,
-                username: 'John Doe',
-                avatar: 'assets/imgs/doe.png',
-                date: '13 November',
-                timestamp: '10:20',
-                system: false,
-            })
+        forceRerender() {
+            this.componentKey += 1;
         },
-        test() {
-            console.log('Hello');
-            eventBus.$on('send-message', () => {
-                console.log('Custom event triggered!')
-            })
+        sendMessage(message) {
+            console.log('reply messages here', message);
+            store.dispatch('sendMessage', message);
         },
-        haha() {
+        openFile(message) {
+            window.open(message.file.file.url, '_blank');
+        },
+        sendReaction(messageId, reaction) {
             console.log('emoji will added hre');
-        }
+            store.dispatch('sendReaction', messageId);
+            this.forceRerender()
+        },
+        editMessage(message) {
+            store.dispatch('editMessage', message);
+            console.log('replyiong mesaage', message);
+        },
+        deleteMessage(message) {
+            store.dispatch('deleteMessage', message);
+            console.log('deleteing message', message);
+        },
+        // replyMessage() {
+        //     console.log('replying message');
+        // }
+
     },
-    mounted() {
-        eventBus.$on('custom-event', () => {
-            console.log('Custom event triggered!')
-        })
-    }
+
 }
 </script>
